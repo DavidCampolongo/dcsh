@@ -1,0 +1,4 @@
+dcsh
+build/
+*.o
+.DS_Store
