@@ -2,6 +2,7 @@
 #include <string.h>
 
 #include "dcsh.h"
+#include "parser.h"
 
 static void trim_trailing_newline(char *line)
 {
@@ -12,11 +13,22 @@ static void trim_trailing_newline(char *line)
     }
 }
 
+static void print_tokens(const TokenList *tokens)
+{
+    printf("tokens (%d):\n", tokens->count);
+
+    for (int i = 0; i < tokens->count; i++) {
+        printf("  [%d] %s\n", i, tokens->items[i]);
+    }
+}
+
 DcshStatus dcsh_run(void)
 {
     char line[DCSH_LINE_MAX];
 
     while (1) {
+        TokenList tokens;
+
         fputs(DCSH_PROMPT, stdout);
         fflush(stdout);
 
@@ -27,14 +39,19 @@ DcshStatus dcsh_run(void)
 
         trim_trailing_newline(line);
 
-        if (line[0] == '\0') {
+        if (parse_tokens(line, &tokens) != 0) {
+            fprintf(stderr, "dcsh: too many tokens\n");
             continue;
         }
 
-        if (strcmp(line, "exit") == 0) {
+        if (tokens.count == 0) {
+            continue;
+        }
+
+        if (tokens.count == 1 && strcmp(tokens.items[0], "exit") == 0) {
             return DCSH_OK;
         }
 
-        printf("dcsh: command execution not implemented yet: %s\n", line);
+        print_tokens(&tokens);
     }
 }

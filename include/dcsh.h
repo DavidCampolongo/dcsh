@@ -2,6 +2,7 @@
 #define DCSH_H
 
 #define DCSH_LINE_MAX 1024
+#define DCSH_TOKEN_MAX 64
 #define DCSH_PROMPT "dcsh> "
 
 typedef enum {
