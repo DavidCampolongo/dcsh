@@ -2,6 +2,7 @@
 #include <string.h>
 
 #include "dcsh.h"
+#include "executor.h"
 #include "parser.h"
 
 static void trim_trailing_newline(char *line)
@@ -10,15 +11,6 @@ static void trim_trailing_newline(char *line)
 
     if (length > 0 && line[length - 1] == '\n') {
         line[length - 1] = '\0';
-    }
-}
-
-static void print_tokens(const TokenList *tokens)
-{
-    printf("tokens (%d):\n", tokens->count);
-
-    for (int i = 0; i < tokens->count; i++) {
-        printf("  [%d] %s\n", i, tokens->items[i]);
     }
 }
 
@@ -52,6 +44,6 @@ DcshStatus dcsh_run(void)
             return DCSH_OK;
         }
 
-        print_tokens(&tokens);
+        execute_external_command(&tokens);
     }
 }

@@ -4,7 +4,7 @@ CFLAGS ?= -std=c11 -Wall -Wextra -Wpedantic -Iinclude
 TARGET = dcsh
 BUILD_DIR = build
 
-SRC = src/main.c src/shell.c src/parser.c
+SRC = src/main.c src/shell.c src/parser.c src/executor.c
 OBJ = $(SRC:src/%.c=$(BUILD_DIR)/%.o)
 
 all: $(TARGET)
