@@ -14,7 +14,8 @@ Full shells contain decades of features, configuration behavior, scripting rules
 * Executes external commands with `fork`, `execvp`, and `waitpid`.
 * Keeps parsing intentionally small and readable instead of implementing a full shell grammar.
 * Supports basic input and output redirection with `open`, `dup2`, and `close`.
-* Plans support for one command pipe, built-in commands, and command history.
+* Supports one command pipe with `pipe`, `fork`, and `dup2`.
+* Plans support for built-in commands and command history.
 
 ## Demo
 
@@ -28,6 +29,8 @@ hello
 dcsh> echo hello > out.txt
 dcsh> cat < out.txt
 hello
+dcsh> echo hello | wc -c
+6
 dcsh> exit
 ```
 
@@ -59,7 +62,7 @@ This project targets POSIX-style systems. It is intended to run on macOS, Linux,
 
 I chose a small C implementation because the project is mainly about understanding the mechanics behind a shell, not hiding them behind libraries. The shell starts with a simple REPL and grows feature by feature, which keeps each part easier to test and reason about.
 
-The parser is intentionally limited in v1. It focuses on whitespace-separated commands and basic redirection instead of trying to behave like a complete production shell. That keeps the project readable while still covering the core systems programming ideas: processes, file descriptors, and command execution.
+The parser is intentionally limited in v1. It focuses on whitespace-separated commands, basic redirection, and one pipe instead of trying to behave like a complete production shell. That keeps the project readable while still covering the core systems programming ideas: processes, file descriptors, and command execution.
 
 The planned history feature will use a fixed-size circular buffer. This avoids dynamic data structures for a feature that naturally has a fixed limit, and it makes the memory behavior easier to inspect.
 
