@@ -15,7 +15,8 @@ Full shells contain decades of features, configuration behavior, scripting rules
 * Keeps parsing intentionally small and readable instead of implementing a full shell grammar.
 * Supports basic input and output redirection with `open`, `dup2`, and `close`.
 * Supports one command pipe with `pipe`, `fork`, and `dup2`.
-* Plans support for built-in commands and command history.
+* Runs built-in commands like `cd`, `pwd`, and `help` in the parent shell process.
+* Plans support for command history.
 
 ## Demo
 
@@ -31,6 +32,14 @@ dcsh> cat < out.txt
 hello
 dcsh> echo hello | wc -c
 6
+dcsh> pwd
+/path/to/current/directory
+dcsh> help
+dcsh built-ins:
+  cd [directory]  change the shell working directory
+  pwd             print the shell working directory
+  help            show this help message
+  exit            exit dcsh
 dcsh> exit
 ```
 
@@ -68,6 +77,6 @@ The planned history feature will use a fixed-size circular buffer. This avoids d
 
 ## What I Learned
 
-This project is a practical look at how shells connect user input to operating system behavior. The main focus is understanding how a command becomes a child process, how the parent process waits for it, and how file descriptors can change where input and output go.
+This project is a practical look at how shells connect user input to operating system behavior. The main focus is understanding how a command becomes a child process, how the parent process waits for it, how file descriptors can change where input and output go, and why built-ins like `cd` must run in the parent shell process.
 
 Future work could add quoted strings, append redirection, multiple pipes, better error messages, and a more complete parser. The current goal is to keep the shell small enough that each feature can be understood directly from the source.
